@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang='en'>
+<head><meta charset='utf-8'>
+    <title>登录</title>
+    <link rel="stylesheet" href="../static/css/login/login_css.css">
+    <script>
+        window.onload = function() {
+            document.getElementById('username_or_contact').focus();
+        };
+    </script>
+</head>
+<body>
+<div>
+    <style>* { box-sizing: border-box; }
+    body {margin: 0;}  #header:not(.sticky-header) #logo a{opacity:0;pointer-events:none;}.c39294{display:none;}.c39310{height:100vh;padding-top:60px;}.c39285{background:url('D:/pychram_workspace/pychram_workspace/htmlpage_1718610709/img/4.jpg') no-repeat right center;}
+    </style>
+<!--    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">-->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>用户登录</title>
+    <link href="../static/css/login/page.min.css" rel="stylesheet"/>
+    <link href="../static/css/login/style.css" rel="stylesheet"/>
+    <link rel="apple-touch-icon" href="../static/image/apple-touch-icon.png"/>
+    <link rel="icon" href=../static/image/favicon.png"/>
+    <div id="imbzm" class="bg-main-img c39285">
+    <img src="../static/image/4.jpg" class="c39294"/><!-- Main Content -->
+        <main id="ira4i" class="main-content c39310">
+            <div class="bg-white rounded shadow-7 w-400 mw-100 p-6 mx-auto">
+                <h5 class="mb-7">用户登录</h5>
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="form-group">
+                        <label for="username_or_contact">用户名/邮箱/手机号码：</label>
+                        <input type="text" id="username_or_contact" name="username_or_contact" placeholder="用户名" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码：</label>
+                        <input type="password" id="password" name="password" placeholder="密码" class="form-control" required>
+                    </div>
+                    <div class="form-group flexbox py-3">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" checked class="custom-control-input"/>
+                            <label class="custom-control-label">记住</label>
+                        </div>
+                        <a href="user-recover.html" class="text-muted small-2">忘记密码？</a>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-block btn-primary">登录</button>
+                    </div>
+                </form>
+                <div class="divider">社交媒体登录</div>
+                <div class="text-center">
+                    <a href="#" class="btn btn-circle btn-sm btn-facebook mr-2">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a href="#" class="btn btn-circle btn-sm btn-google mr-2">
+                        <i class="fa fa-google"></i>
+                    </a>
+                    <a href="#" class="btn btn-circle btn-sm btn-twitter">
+                    <i class="fa fa-twitter"></i>
+                    </a>
+                </div>
+                <hr class="w-30"/>
+                <p class="text-center text-muted small-2">您还没有账号？ <a href="{{ url_for('register') }}">立即注册</a></p>
+            </div></main><!-- /.main-content --></div><!-- Scripts -->
+    <script src="../js/page.min.js"></script>
+    <script src="../js/script.js"></script>
+</div>
+</body>
+</html>

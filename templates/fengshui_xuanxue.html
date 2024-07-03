@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+ 
+{% block content %}
+
+    <div class="container" width="100px" heigh="100px">
+          <div class="row">
+           <nav class="col-sm-3" id="myScrollspy">
+                <ul class="nav nav-pills nav-stacked">
+                 <li><a href="#section1" class="active">章节 1</a></li>
+                 <li><a href="#section2">章节2</a></li>
+                </ul>
+           </nav>
+           <div class="col-sm-9">
+                <div id="section1">
+                    <h1>章节 1</h1>
+                    <p>尝试滚动此部分，并在滚动时查看导航栏！尝试滚动此部分，并在滚动时查看导航栏！ </p>
+                </div>
+                <div id="section2">
+                    <h1>章节 2</h1>
+                    <p>尝试滚动此部分，并在滚动时查看导航栏！尝试滚动此部分，并在滚动时查看导航栏！ </p>
+                </div>
+
+            </div>
+          </div>
+ </div>
+{% endblock %}

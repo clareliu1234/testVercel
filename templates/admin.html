@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        /* 简单的样式，你可以根据需要添加更多样式 */
+        #navbar {
+            height: 100%;
+            width: 160px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+        #navbar a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+        #navbar a:hover {
+            color: #f1f1f1;
+        }
+        .main {
+            margin-left: 160px;
+            padding: 0px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <a href="#home">Home</a>
+        <a href="#users">Users</a>
+        <!-- 更多导航项 -->
+    </div>
+
+    <div class="main">
+        <h1>Admin Dashboard</h1>
+        <div id="tableData">
+            <!-- 表的数据将被动态添加到这里 -->
+        </div>
+{#        <table border="1">#}
+{#            <tr>#}
+{#                <th>ID</th>#}
+{#                <th>Username</th>#}
+{#                <th>Actions</th>#}
+{#            </tr>#}
+{#            {% for user in users %}#}
+{#            <tr>#}
+{#                <td>{{ user.id }}</td>#}
+{#                <td>{{ user.username }}</td>#}
+{#                <td>#}
+{#                    <button onclick="deleteUser({{ user.id }})">Delete</button>#}
+{#                </td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+{#        </table>#}
+        <h2>Add User</h2>
+        <form id="addUserForm">
+            <input type="text" id="addUsername" placeholder="Username" required>
+            <input type="text" id="addEmail" placeholder="Email" required>
+            <input type="text" id="addPhone" placeholder="Phone" required>
+            <input type="password" id="addPassword" placeholder="Password" required>
+            <button type="submit">Add User</button>
+        </form>
+
+        <h2>Update User</h2>
+        <form id="updateUserForm">
+            <input type="number" id="updateUserId" placeholder="User ID" required>
+            <input type="text" id="updateUsername" placeholder="New Username">
+            <input type="text" id="updateEmail" placeholder="New Email">
+            <input type="text" id="updatePhone" placeholder="New Phone">
+            <input type="password" id="updatePassword" placeholder="New Password">
+            <button type="submit">Update User</button>
+        </form>
+    </div>
+
+    <script>
+        function deleteUser(userId) {
+            fetch('/user/' + userId, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                window.location.reload();
+            });
+        }
+        {#增加数据#}
+        document.getElementById('addUserForm').onsubmit = function(event) {
+            event.preventDefault();
+            var username = document.getElementById('addUsername').value;
+            var email = document.getElementById('addEmail').value;
+            var phone = document.getElementById('addPhone').value;
+            var password = document.getElementById('addPassword').value;
+            fetch('/user/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({username: username, email: email, phone: phone, password: password}),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    window.location.reload();
+                });
+        };
+    {#    修改数据#}
+        document.getElementById('updateUserForm').onsubmit = function(event) {
+            event.preventDefault();
+            var userId = document.getElementById('updateUserId').value;
+            var username = document.getElementById('updateUsername').value;
+            var email = document.getElementById('updatePassword').value;
+            var phone = document.getElementById('updateUsername').value;
+            var password = document.getElementById('updatePassword').value;
+            fetch('/user/update/' + userId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({username: username, email: email, phone: phone, password: password}),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    window.location.reload();
+                });
+        };
+
+        {#负责发送请求到后端以获取指定表的数据，并在页面上动态创建一个表格来显示这些数据#}
+        function fetchAndDisplayTableData(tableName) {
+        fetch('/table/' + tableName)
+        .then(response => response.json())
+        .then(data => {
+            const tableDataDiv = document.getElementById('tableData');
+            tableDataDiv.innerHTML = ''; // 清空现有内容
+            // 创建并填充表格
+            const table = document.createElement('table');
+            table.border = '1';
+            // 添加表头
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            if (data.length > 0) {
+                Object.keys(data[0]).forEach(key => {
+                    const th = document.createElement('th');
+                    th.textContent = key;
+                    headerRow.appendChild(th);
+                });
+            }
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            // 添加表数据
+            const tbody = document.createElement('tbody');
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                Object.values(row).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            tableDataDiv.appendChild(table);
+        });
+    }
+
+
+         // 获取所有表的名称并添加到导航栏
+        window.onload = function() {
+            fetch('/tables')
+            .then(response => response.json())
+            .then(tables => {
+                const navbar = document.getElementById('navbar');
+                tables.forEach(table => {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.textContent = table;
+                    link.onclick = function() {
+                        fetchAndDisplayTableData(table);
+                        // 这里可以添加点击表名时的操作，例如显示表的详细信息
+                        {#alert('Table: ' + table);#}
+                    };
+                    navbar.appendChild(link);
+                });
+            });
+        };
+    </script>
+</body>
+</html>
